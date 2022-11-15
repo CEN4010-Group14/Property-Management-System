@@ -5,3 +5,12 @@ Team Members:
 Kevin Tudor -- Test
 
 Ibrahim Elhabashy
+
+
+Instructions:
+
+---TO LIVE PREVIEW---
+
+Right click the .html file 
+Reveal in File explorer
+Click the google chrome HTML option
