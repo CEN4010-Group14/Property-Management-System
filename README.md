@@ -2,7 +2,7 @@
 
 Team Members:
 
-Kevin Tudor -- test
+Kevin Tudor
 
 Ibrahim Elhabashy
 
