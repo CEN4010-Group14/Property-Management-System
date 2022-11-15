@@ -8,6 +8,8 @@ Ibrahim Elhabashy
 
 David Porter
 
+Syed Haque
+
 Instructions:
 
 ---TO LIVE PREVIEW---
