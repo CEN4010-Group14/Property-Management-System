@@ -2,11 +2,13 @@
 
 Team Members:
 
-Kevin Tudor -- test
+Kevin Tudor
 
 Ibrahim Elhabashy
 
 David Porter
+
+Syed Haque test
 
 Instructions:
 
