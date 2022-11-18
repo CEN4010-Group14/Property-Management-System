@@ -97,9 +97,6 @@
 	table.table td .add {
 		display: none;
 	}
-    .button{
-        
-    }
 </style>
 <script>
 $(document).ready(function(){
@@ -110,9 +107,9 @@ $(document).ready(function(){
 		$(this).attr("disabled", "disabled");
 		var index = $("table tbody tr:last-child").index();
         var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-            '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-            '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+            '<td><input type="text" class="form-control" name="Price" id="Price"></td>' +
+            '<td><input type="text" class="form-control" name="Address" id="Address"></td>' +
+            '<td><input type="text" class="form-control" name="Zip Code" id="Zip Code"></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>';
     	$("table").append(row);		
@@ -170,17 +167,17 @@ $(document).ready(function(){
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Address</th>
+                        <th>Zip Code</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>John Doe</td>
-                        <td>Administration</td>
-                        <td>(171) 555-2222</td>
+                        <td>123 street</td>
+                        <td>123 road</td>
+                        <td>1234</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -188,9 +185,9 @@ $(document).ready(function(){
                         </td>
                     </tr>
                     <tr>
-                        <td>Peter Parker</td>
-                        <td>Customer Service</td>
-                        <td>(313) 555-5735</td>
+                        <td>123 street</td>
+                        <td>123 road</td>
+                        <td>1234</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -198,9 +195,9 @@ $(document).ready(function(){
                         </td>
                     </tr>
                     <tr>
-                        <td>Fran Wilson</td>
-                        <td>Human Resources</td>
-                        <td>(503) 555-9931</td>
+                        <td>123 street</td>
+                        <td>123 road</td>
+                        <td>1234</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
