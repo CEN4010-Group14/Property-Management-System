@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap Table with Add and Delete Row Feature</title>
+<title>Dashboard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -101,16 +101,22 @@
 <script>
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
-	var actions = $("table td:last-child").html();
+	var actions = '<td>\
+        <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>\
+        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>\
+        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>\
+    </td>'
+    
 	// Append table with add row form on add new button click
     $(".add-new").click(function(){
 		$(this).attr("disabled", "disabled");
 		var index = $("table tbody tr:last-child").index();
         var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="Price" id="Price"></td>' +
-            '<td><input type="text" class="form-control" name="Address" id="Address"></td>' +
-            '<td><input type="text" class="form-control" name="Zip Code" id="Zip Code"></td>' +
-			'<td>' + actions + '</td>' +
+            '<td><input type="date" class="form-control" name="Date of Purchase" id="Date"></td>' +
+            '<td><input type="text" class="form-control" name="Price" placeholder="$0" id="Price"></td>' +
+            '<td><input type="text" class="form-control" name="Address" placeholder="1234 Street" id="Address"></td>' +
+            '<td><input type="text" class="form-control" name="Zip Code" placeholder="00000" id="Zip Code"></td>' +
+			actions +
         '</tr>';
     	$("table").append(row);		
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
@@ -150,6 +156,8 @@ $(document).ready(function(){
         $(this).parents("tr").remove();
 		$(".add-new").removeAttr("disabled");
     });
+    //Price format
+    
 });
 </script>
 </head>
@@ -158,15 +166,16 @@ $(document).ready(function(){
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Property <b>Management</b></h2></div>
+                    <div class="col-sm-8"><h2>Property <b>Management</b> </h2></div>
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add Property </button>
                     </div>
                 </div>
             </div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Date of Purchase</th>
                         <th>Price</th>
                         <th>Address</th>
                         <th>Zip Code</th>
@@ -175,35 +184,18 @@ $(document).ready(function(){
                 </thead>
                 <tbody>
                     <tr>
-                        <td>123 street</td>
-                        <td>123 road</td>
-                        <td>1234</td>
+                        <!--
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
+                        -->
                     </tr>
-                    <tr>
-                        <td>123 street</td>
-                        <td>123 road</td>
-                        <td>1234</td>
-                        <td>
-							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>123 street</td>
-                        <td>123 road</td>
-                        <td>1234</td>
-                        <td>
-							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>      
                 </tbody>
             </table>
         </div>
