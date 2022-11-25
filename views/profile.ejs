@@ -176,7 +176,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= firstName %> <%= lastName %></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -235,12 +235,12 @@
                                                 <!-- Form Group (first name)-->
                                                 <div class="col-md-6">
                                                     <label class="small mb-1" for="inputFirstName">First name</label>
-                                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" value="Valerie">
+                                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" value=<%= firstName %>>
                                                 </div>
                                                 <!-- Form Group (last name)-->
                                                 <div class="col-md-6">
                                                     <label class="small mb-1" for="inputLastName">Last name</label>
-                                                    <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="Luna">
+                                                    <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value=<%= lastName %>>
                                                 </div>
                                             </div>
                                             <!-- Form Row        -->

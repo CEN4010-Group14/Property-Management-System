@@ -23,7 +23,7 @@ mongoose.connect(process.env.DATABASE, {
 app.use(express.urlencoded({ extended: true }));
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser(process.env.SECRET))
 app.use(cors())
 app.use(express.static(__dirname));
 

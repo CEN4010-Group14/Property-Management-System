@@ -8,7 +8,7 @@ exports.signup = (req, res) => {
   const errors = validationResult(req)
 
   if(!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.render('signup', {
       error: errors.array()[0].msg
     })
   }
@@ -16,14 +16,13 @@ exports.signup = (req, res) => {
   const user = new User(req.body)
   user.save((err, user) => {
     if(err) {
-      return res.status(400).json({
+      return res.render('signup', {
         error: "Unable to add user"
-      })
+      });
     }
 
-    return res.json({
-      message: "Success",
-      user
+    return res.render('signup', {
+      error: "Successfully created account!"
     })
   })
 }
@@ -34,16 +33,9 @@ exports.signin = (req, res) => {
 	let password = req.body.password;
 
   User.findOne({email}, (err, user) => {
-    if(err || !user) {
-      return res.status(400).json({
-        error: "Email was not found"
-      })
-    }
-
-    // Authenticate user
-    if(!user.authenticate(password)) {
-      return res.status(400).json({
-        error: "Email and password do not match"
+    if(err || !user || !user.authenticate(password)) {
+      return res.render('signin', {
+        error: "Incorrect password or email not found"
       })
     }
 
@@ -53,18 +45,19 @@ exports.signin = (req, res) => {
     // Put token in cookie
     res.cookie('token', token, {expire: new Date() + 1})
 
-    res.redirect('/dashboard');
+    res.redirect('dashboard')
 
     // Send response
-    //const {_id, name, email} = user
-   // return res.json({
-   //   token,
-   //   user: {
-   //     _id,
-   //     name,
-   //     email
-   //   }
-   // })
+  /*const {_id, firstName, lastName, email} = user
+   return res.json({
+    token,
+   user: {
+   _id,
+   firstName,
+   lastName,
+   email
+  }
+  })*/
     
   })
 }
