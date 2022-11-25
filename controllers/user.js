@@ -1,6 +1,5 @@
 const User = require("../models/user")
 const {validationResult} = require('express-validator')
-const user = require("../models/user")
 var jwt = require('jsonwebtoken')
 var expressJwt = require('express-jwt')
 
@@ -31,7 +30,8 @@ exports.signup = (req, res) => {
 
 
 exports.signin = (req, res) => {
-  const {email, password} = req.body
+  let email = req.body.email;
+	let password = req.body.password;
 
   User.findOne({email}, (err, user) => {
     if(err || !user) {
@@ -53,23 +53,26 @@ exports.signin = (req, res) => {
     // Put token in cookie
     res.cookie('token', token, {expire: new Date() + 1})
 
+    res.redirect('/dashboard');
+
     // Send response
-    const {_id, name, email} = user
-    return res.json({
-      token,
-      user: {
-        _id,
-        name,
-        email
-      }
-    })
+    //const {_id, name, email} = user
+   // return res.json({
+   //   token,
+   //   user: {
+   //     _id,
+   //     name,
+   //     email
+   //   }
+   // })
     
   })
 }
 
 exports.signout = (req, res) => {
   res.clearCookie("token")
-  return res.json({
-    message: "User siginout successful"
-  })
+  res.redirect('/');
+  //return res.json({
+  //  message: "User signout successful"
+  //})
 }

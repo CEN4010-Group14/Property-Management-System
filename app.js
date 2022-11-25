@@ -20,7 +20,9 @@ mongoose.connect(process.env.DATABASE, {
 })
 
 // Use parsing middleware
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }));
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
 app.use(cookieParser())
 app.use(cors())
 app.use(express.static(__dirname));
