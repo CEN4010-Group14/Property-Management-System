@@ -9,7 +9,7 @@ exports.newProperty = (req, res) => {
     }
   
     const property = new Property({
-      ownerID: req.app.locals.user,
+      ownerId: req.app.locals.user.id,
       dateOfPurchase: req.body.dateOfPurchase,
       price: req.body.price,
       address: req.body.address,
@@ -25,4 +25,36 @@ exports.newProperty = (req, res) => {
       }
     })
   }
+
+exports.editProperty = (req, res) => {
+    const errors = validationResult(req)
+  
+    if(!errors.isEmpty()) {
+      console.log(errors.array()[0].msg)
+    }
+  
+    Property.save({
+      _id: req.app.locals.property.id,
+      dateOfPurchase: req.body.dateOfPurchase,
+      price: req.body.price,
+      address: req.body.address,
+      zipCode: req.body.zipCode
+    })
+}
+
+exports.deleteProperty = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  Property.save({
+    ownerId: req.app.locals.user.id,
+    dateOfPurchase: req.body.dateOfPurchase,
+    price: req.body.price,
+    address: req.body.address,
+    zipCode: req.body.zipCode
+  })
+}
   

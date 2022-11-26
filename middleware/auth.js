@@ -26,18 +26,18 @@ const checkUser = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.SECRET, async (err, decodedToken) => {
       if (err) {
-        res.locals.user = null;
+        res.app.locals.user = null;
         console.log(err)
         next();
       } else {
         let user = await User.findById(decodedToken._id);
-        res.locals.user = user;
+        res.app.locals.user = user;
         console.log(user)
         next();
       }
     });
   } else {
-    res.locals.user = null;
+    res.app.locals.user = null;
     next();
   }
 };

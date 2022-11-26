@@ -12,8 +12,14 @@ exports.signup = (req, res) => {
     })
   }
 
-  const user = new User(req.body)
-  user.save((err, user) => {
+  const user = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    username: req.body.email.substring(0, req.body.email.lastIndexOf("@")),
+    password: req.body.password
+  })
+  user.insertOne((err, user) => {
     if(err) {
       return res.render('signup', {
         error: "Unable to add user"

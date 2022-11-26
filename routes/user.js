@@ -36,20 +36,22 @@ router.get('/dashboard', async (req, res) => {
         const properties = await Property.find({})
         res.render('dashboard', {
           properties: properties,
-          firstName: res.locals.user.firstName,
-          lastName: res.locals.user.lastName,
-          id: res.locals.user._id
+          firstName: res.app.locals.user.firstName,
+          lastName: res.app.locals.user.lastName,
+          id: res.app.locals.user.id
         })
     } catch(error) {
+      console.log(error)
         res.redirect('/')
     }
 });
 
 router.get('/profile', requireAuth, (req, res) => {
   res.render('profile', {
-    firstName: res.locals.user.firstName,
-    lastName: res.locals.user.lastName,
-    email: res.locals.user.email
+    firstName: res.app.locals.user.firstName,
+    lastName: res.app.locals.user.lastName,
+    username: res.app.locals.user.username,
+    email: res.app.locals.user.email
   })
 });
 
@@ -60,7 +62,6 @@ router.post('/dashboard', checkUser, [
   check("price", "Price can only be a number").isInt(),
   check("address", "Address cannot be more than 50 characters").isLength({max: 50}),
   check("address", "Address cannot be empty").isLength({min: 1}),
-  check("zipCode", "Zip Code can only be a number").isInt(),
   check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
   check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
 ], newProperty)

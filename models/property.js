@@ -19,7 +19,7 @@ const propertySchema = new mongoose.Schema({
     maxlength: 50
   },
   zipCode: {
-    type: Number,
+    type: String,
     required: true,
     maxlength: 8
   },

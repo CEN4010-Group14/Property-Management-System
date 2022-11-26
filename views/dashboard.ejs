@@ -367,9 +367,9 @@ display: none;
                                             <tr>
                                             </tr>
                                             <% properties.forEach(property => { %>
-                                                <% if(id = property.ownerId) { %>
+                                                <% if(id == property.ownerId) { %>
                                                     <tr>
-                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" value=<%= property.dateOfPurchase %>></td>
+                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase %>></td>
                                                     <td>$<%= property.price %></td>
                                                     <td><%= property.address %></td>
                                                     <td><%= property.zipCode %></td>
