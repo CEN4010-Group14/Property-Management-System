@@ -42,5 +42,9 @@ const checkUser = (req, res, next) => {
   }
 };
 
+const checkProperty = (req, res, next) => {
+  
+}
+
 
 module.exports = { requireAuth, checkUser };

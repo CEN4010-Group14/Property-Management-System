@@ -16,6 +16,7 @@ const propertySchema = new mongoose.Schema({
   address: {
     type: String,
     required: true,
+    unique: true,
     maxlength: 50
   },
   zipCode: {
