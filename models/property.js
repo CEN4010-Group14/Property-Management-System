@@ -1,6 +1,9 @@
 const mongoose = require("mongoose")
 
 const propertySchema = new mongoose.Schema({
+  ownerId: {
+    type: mongoose.ObjectId
+  },
   dateOfPurchase: {
     type: Date,
     required: true
@@ -18,7 +21,7 @@ const propertySchema = new mongoose.Schema({
   zipCode: {
     type: Number,
     required: true,
-    maxlength: 10
+    maxlength: 8
   },
 }, {timestamps: true})
 

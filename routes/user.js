@@ -1,11 +1,12 @@
 const express = require("express")
 const { signup, signin, signout } = require("../controllers/user")
+const { newProperty } = require("../controllers/property")
 const { requireAuth, checkUser } = require('../middleware/auth');
 const {check} = require('express-validator')
-const router = express.Router()
 const Property = require("../models/property")
+const router = express.Router()
 
-router.get('*', checkUser);
+router.get('/*', checkUser);
 
 router.get('/signup', (req, res) => {
   return res.render('signup');
@@ -30,19 +31,39 @@ router.get('/forgot-password', (req, res) => {
   return res.render('forgot-password');
 });
 
-router.get('/dashboard', requireAuth, (req, res) => {
-    res.render('dashboard', {
-      firstName: res.locals.user.firstName,
-      lastName: res.locals.user.lastName
-    })
+router.get('/dashboard', async (req, res) => {
+    try{
+        const properties = await Property.find({})
+        res.render('dashboard', {
+          properties: properties,
+          firstName: res.locals.user.firstName,
+          lastName: res.locals.user.lastName,
+          id: res.locals.user._id
+        })
+    } catch(error) {
+        res.redirect('/')
+    }
 });
 
 router.get('/profile', requireAuth, (req, res) => {
   res.render('profile', {
     firstName: res.locals.user.firstName,
-    lastName: res.locals.user.lastName
+    lastName: res.locals.user.lastName,
+    email: res.locals.user.email
   })
 });
+
+router.post('/dashboard', checkUser, [
+  check("dateOfPurchase", "Date cannot be empty").isDate(),
+  check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
+  check("price", "Price cannot be empty").isLength({min: 1}),
+  check("price", "Price can only be a number").isInt(),
+  check("address", "Address cannot be more than 50 characters").isLength({max: 50}),
+  check("address", "Address cannot be empty").isLength({min: 1}),
+  check("zipCode", "Zip Code can only be a number").isInt(),
+  check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
+  check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
+], newProperty)
 
 router.get("/signout", signout)
 

@@ -85,21 +85,21 @@ display: none;
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
-        var actions = '<td>\
-            <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>\
-            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>\
-            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>\
-        </td>'
+        var actions = `<td>
+            <a class="add" title="Done" data-toggle="tooltip" onclick="document.getElementById('property_form').submit();"><i class="material-icons">&#xE03B;</i></a>\
+            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+        </td>`
         
         // Append table with add row form on add new button click
         $(".add-new").click(function(){
             $(this).attr("disabled", "disabled");
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
-                '<td><input type="date" class="form-control" name="Date of Purchase" id="Date"></td>' +
-                '<td><input type="text" class="form-control" name="Price" placeholder="$0" id="Price"></td>' +
-                '<td><input type="text" class="form-control" name="Address" placeholder="1234 Street" id="Address"></td>' +
-                '<td><input type="text" class="form-control" name="Zip Code" placeholder="00000" id="Zip Code"></td>' +
+                '<td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase"></td>' +
+                '<td><input type="text" class="form-control" name="price" placeholder="$0" id="price"></td>' +
+                '<td><input type="text" class="form-control" name="address" placeholder="address" id="Address"></td>' +
+                '<td><input type="text" class="form-control" name="zipCode" placeholder="00000" id="zipCode"></td>' +
                 actions +
             '</tr>';
             $("table").append(row);		
@@ -351,22 +351,42 @@ display: none;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <!-- Property Table -->
-                                    <thead>
-                                        <tr>
-                                            <th>Date of Purchase</th>
-                                            <th>Price</th>
-                                            <th>Address</th>
-                                            <th>Zip Code</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <form id="property_form" action="/dashboard" method="post">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <!-- Property Table -->
+                                        <thead>
+                                            <tr>
+                                                <th>Date of Purchase</th>
+                                                <th>Price</th>
+                                                <th>Address</th>
+                                                <th>Zip Code</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            </tr>
+                                            <% properties.forEach(property => { %>
+                                                <% if(id = property.ownerId) { %>
+                                                    <tr>
+                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" value=<%= property.dateOfPurchase %>></td>
+                                                    <td>$<%= property.price %></td>
+                                                    <td><%= property.address %></td>
+                                                    <td><%= property.zipCode %></td>
+                                                    <td>
+                                                        <a class="add" title="Done" data-toggle="tooltip" onclick="document.getElementById('property_form').submit();"><i class="material-icons">&#xE03B;</i></a>
+                                                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                                    </td>
+                                                    </tr>
+                                                <% } %>
+                                            <% }) %>
+                                        </tbody>
+                                        <% if(locals.error) { %>
+                                            <div class="text-center"><%= error %></div>
+                                        <% } %>
+                                    </table>
+                                </form>
                             </div>
                         </div>
                     </div>
