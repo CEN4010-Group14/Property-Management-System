@@ -2,7 +2,7 @@
   "name": "property-management-system",
   "version": "1.0.0",
   "description": "This is a user login and registration app using Node.js, Express, Mongoose and express-sessions. ",
-  "main": "server.js",
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
