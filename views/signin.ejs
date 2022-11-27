@@ -24,6 +24,18 @@
 
 </head>
 
+<script>
+    // Show password
+    function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+</script>
+
 <body class="bg-gradient-primary" style="background: linear-gradient(to left,rgb(82, 142, 244),  rgb(148, 103, 201))">
 
     <div class="container">
@@ -53,7 +65,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                name="password" placeholder="Password" required="">
+                                                name="password" placeholder="Password" required="" id="password">
                                         </div>
                                         <div class="form-group flex-row">
                                             <div class="custom-control custom-checkbox small">
@@ -62,7 +74,7 @@
                                                     <label class="custom-control-label" for="customCheck">Remember Me</label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" class="custom-control-input" onclick="myFunction()" id="customCheck2">
+                                                    <input type="checkbox" class="custom-control-input" onclick="showPassword()" id="customCheck2">
                                                     <label class="custom-control-label" for="customCheck2">Show Password</label>
                                                 </div>
                                             </div>
@@ -99,7 +111,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="/vendor/bootstrap/js/customFun.js"></script>
+    <script src="/views/js/customFun.js"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
