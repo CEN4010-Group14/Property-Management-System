@@ -16,7 +16,7 @@ exports.newProperty = (req, res) => {
       address: req.body.address,
       zipCode: req.body.zipCode
     })
-    property.save((err) => {
+    property.save((err, property) => {
       if(err) {
         console.log(err);
         console.log("Unable to add property")
