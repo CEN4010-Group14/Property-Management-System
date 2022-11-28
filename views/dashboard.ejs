@@ -83,10 +83,11 @@ display: none;
 </style>
 
 <script>
+
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
         var actions = `<td>
-            <a class="add" title="Done" data-toggle="tooltip" onclick="document.getElementById('property_form').submit()"><i class="material-icons">&#xE03B;</i></a>
+            <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
         </td>`
@@ -108,9 +109,20 @@ display: none;
         });
         // Add row on add button click
         $(document).on("click", ".add", function(){
+            localStorage.setItem("action", "add");
+            document.getElementById('property_form').submit();
             var empty = false;
             var input = $(this).parents("tr").find('input[type="text"]');
+            var inputDate = $(this).parents("tr").find('input[type="date"]');
             input.each(function(){
+                if(!$(this).val()){
+                    $(this).addClass("error");
+                    empty = true;
+                } else{
+                    $(this).removeClass("error");
+                }
+            });
+            inputDate.each(function(){
                 if(!$(this).val()){
                     $(this).addClass("error");
                     empty = true;
@@ -122,14 +134,21 @@ display: none;
             if(!empty){
                 input.each(function(){
                     $(this).parent("td").html($(this).val());
-                });			
+                });	
+                inputDate.each(function(){
+                    $(this).parent("td").html($(this).val());
+                });		
                 $(this).parents("tr").find(".add, .edit").toggle();
                 $(".add-new").removeAttr("disabled");
             }		
         });
         // Edit row on edit button click
         $(document).on("click", ".edit", function(){		
-            $(this).parents("tr").find("td:not(:last-child)").each(function(){
+            $(this).parents("tr").find("td:first-child").each(function(){
+                $(this).html('<input type="date" class="form-control" value="' + $(this).text() + '">');
+            });	
+            
+            $(this).parents("tr").find("td:not(:first-child):not(:last-child)").each(function(){
                 $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
             });		
             $(this).parents("tr").find(".add, .edit").toggle();
@@ -138,6 +157,8 @@ display: none;
         // Delete row on delete button click
         $(document).on("click", ".delete", function(){
             if (confirm("Are you sure to execute this action?")){
+                localStorage.setItem("action", "delete");
+                document.getElementById('property_form').submit();
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
                 $(".add-new").removeAttr("disabled");
@@ -371,10 +392,10 @@ display: none;
                                             <% properties.forEach(property => { %>
                                                 <% if(id == property.ownerId) { %>
                                                     <tr>
-                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase %>></td>
-                                                    <td>$<%= property.price %></td>
-                                                    <td><%= property.address %></td>
-                                                    <td><%= property.zipCode %></td>
+                                                    <td id="dateOfPurchase"><%= property.dateOfPurchase.toISOString().split('T')[0] %></td>
+                                                    <td id="price"><%= property.price %></td>
+                                                    <td id="address"><%= property.address %></td>
+                                                    <td id="zipCode"><%= property.zipCode %></td>
                                                     <td>
                                                         <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                         <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

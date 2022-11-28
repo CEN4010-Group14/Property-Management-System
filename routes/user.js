@@ -1,6 +1,6 @@
 const express = require("express")
 const { signup, signin, signout } = require("../controllers/user")
-const { newProperty } = require("../controllers/property")
+const { addProperty, editProperty, deleteProperty } = require("../controllers/property")
 const { requireAuth, checkUser } = require('../middleware/auth');
 const {check} = require('express-validator')
 const Property = require("../models/property")
@@ -76,7 +76,7 @@ router.post('/dashboard', [
   check("zipCode", "Zip Code can only be a number").isInt(),
   check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
   check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
-], newProperty);
+], addProperty);
 
 // Logout GET method - Handles logging out
 router.get("/signout", signout)
