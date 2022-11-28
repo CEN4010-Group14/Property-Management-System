@@ -101,6 +101,7 @@ display: none;
                 '<td><input type="text" class="form-control" name="price" placeholder="$0" id="price"></td>' +
                 '<td><input type="text" class="form-control" name="address" placeholder="address" id="Address"></td>' +
                 '<td><input type="text" class="form-control" name="zipCode" placeholder="00000" id="zipCode"></td>' +
+                '<input type="hidden" class="form-control" name="checkAction" placeholder="" id="checkAction">' +
                 actions +
             '</tr>';
             $("table").append(row);		
@@ -109,7 +110,7 @@ display: none;
         });
         // Add row on add button click
         $(document).on("click", ".add", function(){
-            localStorage.setItem("action", "add");
+            document.getElementById('checkAction').setAttribute('value', 'add');
             document.getElementById('property_form').submit();
             var empty = false;
             var input = $(this).parents("tr").find('input[type="text"]');
@@ -157,7 +158,7 @@ display: none;
         // Delete row on delete button click
         $(document).on("click", ".delete", function(){
             if (confirm("Are you sure to execute this action?")){
-                localStorage.setItem("action", "delete");
+                document.getElementById('checkAction').setAttribute('value', 'delete');
                 document.getElementById('property_form').submit();
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
@@ -165,6 +166,16 @@ display: none;
                 $(this).parents("tr").find(".add, .delete").toggle();
             } 
         });
+
+        // Print Table
+        $(document).on('click', '.print', function(){
+            var table = document.getElementById("dataTable");
+            newWin = window.open("");
+            newWin.document.write(table.outerHTML);
+            newWin.document.write('<style type="text/css"> @media print { #dataTable { font-size: 18px; } }</style>');
+            newWin.print();
+            newWin.close();
+        })
     });
 </script>
 
@@ -423,6 +434,9 @@ display: none;
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span class="print" style="cursor:pointer;">Download / Print Properties</span>
+                    </div>
                     <div class="copyright text-center my-auto">
                         <span>CEN4010 - Group 14</span>
                     </div>
