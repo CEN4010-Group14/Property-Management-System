@@ -29,6 +29,7 @@
 
 <style>
 /*Legacy CSS*/
+
 /*Property Table*/
 
 table.table tr th, table.table tr td {
@@ -157,7 +158,7 @@ display: none;
         });
         // Delete row on delete button click
         $(document).on("click", ".delete", function(){
-            if (confirm("Are you sure to execute this action?")){
+            if (confirm("Delete this property?")){
                 document.getElementById('checkAction').setAttribute('value', 'delete');
                 document.getElementById('property_form').submit();
                 $(this).tooltip('hide');
@@ -170,9 +171,35 @@ display: none;
         // Print Table
         $(document).on('click', '.print', function(){
             var table = document.getElementById("dataTable");
-            newWin = window.open("");
+            var htmlToPrint = '' +
+                '<style type="text/css">' +
+                'table th, table td {' +
+                'border:1px solid #000;' +
+                'padding:0.5em;' +
+                '}' +
+                '</style>';
+            newWin = window.open('placeholder');
             newWin.document.write(table.outerHTML);
-            newWin.document.write('<style type="text/css"> @media print { #dataTable { font-size: 18px; } }</style>');
+            newWin.document.write('<html><head><title>Property Table</title>...');
+            newWin.document.write('<style type="text/css">\
+                @media print {\
+                    #dataTable {\
+                        font-size: 18px;\
+                    } \
+                    .table th{\
+                        border:1px solid #000;\
+                        padding:0.5em;\
+                        text-align: center;\
+                    }\
+                    .table td {\
+                        border:1px solid #000;\
+                        padding:0.5em;\
+                        text-align: right;\
+                    }\
+                    .noprint {\
+                        display:none;\
+                    }\
+                }</style>');
             newWin.print();
             newWin.close();
         })
@@ -193,19 +220,12 @@ display: none;
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-table"></i>
                     <span>Dashboard</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - properties -->
-            <li class="nav-item">
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Property</span></a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -248,6 +268,12 @@ display: none;
                         </div>
                     </form>
 
+                    <!-- Generate Report -->
+                    <div>
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <span class="print" style="cursor:pointer;">Download / Print Properties</span></a>
+                    </div>
+                    
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -333,7 +359,7 @@ display: none;
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
                         </li>
-
+            
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -394,7 +420,7 @@ display: none;
                                                 <th>Price</th>
                                                 <th>Address</th>
                                                 <th>Zip Code</th>
-                                                <th>Actions</th>
+                                                <th class="noprint">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -407,7 +433,7 @@ display: none;
                                                     <td id="price"><%= property.price %></td>
                                                     <td id="address"><%= property.address %></td>
                                                     <td id="zipCode"><%= property.zipCode %></td>
-                                                    <td>
+                                                    <td class="noprint">
                                                         <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                         <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                                         <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
@@ -434,9 +460,6 @@ display: none;
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span class="print" style="cursor:pointer;">Download / Print Properties</span>
-                    </div>
                     <div class="copyright text-center my-auto">
                         <span>CEN4010 - Group 14</span>
                     </div>
