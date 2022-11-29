@@ -2,71 +2,49 @@ const Property = require("../models/property")
 const {validationResult} = require('express-validator')
 
 // Creates a New Property - WORKING
-exports.modifyProperty = (req, res) => {
+exports.addProperty = (req, res) => {
     const errors = validationResult(req)
-    var action = req.body.checkAction;
-    console.log(action)
   
     if(!errors.isEmpty()) {
       console.log(errors.array()[0].msg)
     }
-
-    switch(action) {
-      case 'add':
-        const property = new Property({
-          ownerId: req.app.locals.user.id,
-          dateOfPurchase: req.body.dateOfPurchase,
-          price: req.body.price,
-          address: req.body.address,
-          zipCode: req.body.zipCode
-        })
-        property.save((err, property) => {
-          if(err) {
-            console.log(err);
-            console.log("Unable to add property")
-          } else {
-            console.log("Added Property Successfully")
-            console.log(property)
-          }
-        })
-        break;
-      case 'delete':
-          Property.findOneAndDelete({ ownerId: req.app.locals.user.id, address: req.body.address }, (err, property) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("Deleted property successfully");
-            }
-          })
-          break;
-        default:
-          console.log("Error modifying property")
-          break;
-    }
+  
+    const property = new Property({
+      ownerId: res.app.locals.user.id,
+      dateOfPurchase: req.query.dateOfPurchase,
+      price: req.query.price,
+      address: req.query.address,
+      zipCode: req.query.zipCode
+    })
+    property.save((err, property) => {
+      if(err) {
+        console.log(err);
+        console.log("Unable to add property")
+      } else {
+        console.log("Added Property Successfully")
+        console.log(property)
+      }
+    })
   }
 
-  // Edit a Property - NOT WORKING
-/*exports.editProperty = (req, res) => {
+  // Edit a Property - WORKING
+exports.editProperty = (req, res) => {
     const errors = validationResult(req)
 
     if(!errors.isEmpty()) {
       console.log(errors.array()[0].msg)
     }
 
-    Property.findOne({ ownerId: req.app.locals.user.id, address: req.body.address }, (err, property) => {
-      if(err || !property) {
-        return res.render('dashboard', {
-          error: "Error editing address"
-        })
+    Property.findOneAndUpdate({ _id: req.params.propertyId }, {
+      dateOfPurchase: new Date(req.query.dateOfPurchase),
+      price: req.query.price,
+      address: req.query.address,
+      zipCode: req.query.zipCode
+    }, (err, property) => {
+      if(err) {
+        console.log(err);
       } else {
-        Property.save({
-          _id: property.id,
-          dateOfPurchase: req.body.dateOfPurchase,
-          price: req.body.price,
-          address: req.body.address,
-          zipCode: req.body.zipCode
-        })
-        console.log("Edited property successfully");
+        console.log("Updated property successfully");
       }
     })
 }
@@ -75,18 +53,18 @@ exports.modifyProperty = (req, res) => {
 exports.deleteProperty = (req, res) => {
   const errors = validationResult(req)
 
+  console.log(req.params.propertyId)
+
   if(!errors.isEmpty()) {
     console.log(errors.array()[0].msg)
   }
 
-  console.log(req.body.address)
-
-  Property.findOneAndDelete({ ownerId: req.app.locals.user.id, address: req.body.address }, (err, property) => {
+  Property.findOneAndDelete({ _id: req.params.propertyId }, (err, property) => {
     if (err) {
       console.log(err);
     } else {
       console.log("Deleted property successfully");
     }
   })
-}*/
+}
   
