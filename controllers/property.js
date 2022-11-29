@@ -20,6 +20,7 @@ exports.addProperty = (req, res) => {
       if(err) {
         console.log(err);
         console.log("Unable to add property")
+        console.log(property)
       } else {
         console.log("Added Property Successfully")
         console.log(property)
@@ -36,7 +37,7 @@ exports.editProperty = (req, res) => {
     }
 
     Property.findOneAndUpdate({ _id: req.params.propertyId }, {
-      dateOfPurchase: new Date(req.query.dateOfPurchase),
+      dateOfPurchase: req.query.dateOfPurchase,
       price: req.query.price,
       address: req.query.address,
       zipCode: req.query.zipCode

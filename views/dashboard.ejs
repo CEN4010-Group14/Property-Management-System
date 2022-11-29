@@ -40,10 +40,10 @@ table.table th i {
   margin: 0 5px;
 }
 table.table th:last-child {
-  width: 100px;
+  width: 125px;
 }
 table.table td button {
-  margin: 0 5px;
+  margin: 0;
   min-width: 24px;
   border: none;
   background: transparent;
@@ -58,7 +58,7 @@ table.table td button.delete {
   color: #E34724;
 }
 table.table td i {
-  font-size: 19px;
+    font-size: 22px;
 }
 table.table td button.add i {
   font-size: 24px;
@@ -153,7 +153,7 @@ display: none;
             $(".add-new").attr("disabled", "disabled");
         });
         // Delete row on delete button click
-        $(document).on("click", ".delete", function(){
+        $(document).on("submit", ".delete", function(){
             if (confirm("Are you sure to execute this action?")){
                 document.getElementById('checkAction').setAttribute('value', 'delete');
                 document.getElementById('property_form').submit();
@@ -435,18 +435,19 @@ display: none;
                                             <% properties.forEach(property => { %>
                                                 <% if(id == property.ownerId) { %>
                                                     <tr>
-                                                    <td id="dateOfPurchase"><%= property.dateOfPurchase.toISOString().split('T')[0] %></td>
-                                                    <td id="price"><%= property.price %></td>
-                                                    <td id="address"><%= property.address %></td>
-                                                    <td id="zipCode"><%= property.zipCode %></td>
+                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
+                                                    <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
+                                                    <td><input type="text" class="form-control" name="address" id="address" disabled="" value=<%= property.address %>></td>
+                                                    <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
                                                     <td>
-                                                        <a class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                                                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                                        <button type="submit" class="add" formaction="/dashboard/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
+                                                        <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
+                                                        <button type="submit" class="delete" title="Delete" formaction="/dashboard/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
                                                     </td>
                                                     </tr>
                                                 <% } %>
                                             <% }) %>
+                                </form>
                                         </tbody>
                                     </table>
                                     <% if(locals.error) { %>
