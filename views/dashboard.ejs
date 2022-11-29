@@ -108,7 +108,7 @@ display: none;
             $('[data-toggle="tooltip"]').tooltip();
         });
         // Add row on add button click
-        $(document).on("click", ".add", function(){
+        $(".add").on("click", function(){
             var empty = false;
             var input = $(this).parents("tr").find('input[type="text"]');
             var inputDate = $(this).parents("tr").find('input[type="date"]');
@@ -119,6 +119,10 @@ display: none;
                 } else{
                     $(this).removeClass("error");
                 }
+
+                if(!$(this).val.hasAttribute('disabled')) {
+                    $(this).addAttr('disabled');
+                }
             });
             inputDate.each(function(){
                 if(!$(this).val()){
@@ -127,9 +131,12 @@ display: none;
                 } else{
                     $(this).removeClass("error");
                 }
+
+                if(!$(this).hasAttribute('disabled')) {
+                    $(this).addAttr('disabled');
+                }
             });
             $(this).parents("tr").find(".error").first().focus();
-            if(!empty){
                 /*input.each(function(){
                     $(this).parent("td").html($(this).val());
                 });	
@@ -137,11 +144,10 @@ display: none;
                     $(this).parent("td").html($(this).val());
                 });*/	
                 $(this).parents("tr").find(".add, .edit").toggle();
-                $(".add-new").removeAttr("disabled");
-            }		
+                $(".add-new").removeAttr("disabled");	
         });
         // Edit row on edit button click
-        $(document).on("click", ".edit", function(){		
+        $(".edit").on("click", function(){		
             $(this).parents("tr").find("input:first-child").each(function(){
                 $(this).html('<input type="date" class="form-control" value="' + $(this).text() + '">').removeAttr("disabled");;
             });	
@@ -153,9 +159,8 @@ display: none;
             $(".add-new").attr("disabled", "disabled");
         });
         // Delete row on delete button click
-        $(document).on("submit", ".delete", function(){
+        $(document).on("click", ".delete", function(){
             if (confirm("Are you sure to execute this action?")){
-                document.getElementById('checkAction').setAttribute('value', 'delete');
                 document.getElementById('property_form').submit();
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
@@ -437,7 +442,7 @@ display: none;
                                                     <tr>
                                                     <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
                                                     <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
-                                                    <td><input type="text" class="form-control" name="address" id="address" disabled="" value=<%= property.address %>></td>
+                                                    <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
                                                     <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
                                                     <td>
                                                         <button type="submit" class="add" formaction="/dashboard/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
