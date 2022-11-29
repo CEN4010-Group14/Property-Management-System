@@ -130,7 +130,7 @@ display: none;
                     <div id="dia_shr" style="display:none;">\
                     <p>GRANT ACCESS</p><input placeholder="username" type="text" id="typeEmailX" />\
                     <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>\
-                </i>\
+                </i>
             </a>
         </td>`
         var hid_inv = true;
@@ -158,12 +158,9 @@ display: none;
                 if(!$(this).val()){
                     $(this).addClass("error");
                     empty = true;
+                    $(this).addAttr("disabled");
                 } else{
                     $(this).removeClass("error");
-                }
-
-                if(!$(this).val.hasAttribute('disabled')) {
-                    $(this).addAttr('disabled');
                 }
             });
             inputDate.each(function(){
@@ -191,23 +188,23 @@ display: none;
         // Edit row on edit button click
         $(".edit").on("click", function(){		
             $(this).parents("tr").find("input:first-child").each(function(){
-                $(this).html('<input type="date" class="form-control" value="' + $(this).text() + '">').removeAttr("disabled");;
+                $(this).html('<input type="date" class="form-control" value="' + $(this).text() + '">').removeAttr("disabled");
             });	
             
             $(this).parents("tr").find("input:not(:first-child):not(:last-child)").each(function(){
-                $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">').removeAttr("disabled");;
+                $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">').removeAttr("disabled");
             });		
             $(this).parents("tr").find(".add, .edit").toggle();
             $(".add-new").attr("disabled", "disabled");
         });
         // Delete row on delete button click
-        $(document).on("click", ".delete", function(){
+        $(".delete").on("click", function(){
             if (confirm("Are you sure to execute this action?")){
-                document.getElementById('property_form').submit();
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
                 $(".add-new").removeAttr("disabled");
                 $(this).parents("tr").find(".add, .delete").toggle();
+                $(this).parent('form').trigger('submit');
             } 
         });
 
@@ -432,8 +429,12 @@ display: none;
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= firstName %> <%= lastName %></span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <% if (!user.profileImg) { %>
+                                    <!-- Profile picture image-->
+                                    <img class="img-profile rounded-circle mb-2" src="img/undraw_profile.svg" alt="Profile Picture">
+                                <% } else { %>
+                                    <img class="img-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
+                                <% } %>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

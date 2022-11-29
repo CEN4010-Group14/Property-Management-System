@@ -1,7 +1,8 @@
 const express = require("express")
-const { signup, signin, signout } = require("../controllers/user")
+const { signup, signin, signout, editUser, editUserProfileImg } = require("../controllers/user")
 const { addProperty, editProperty, deleteProperty } = require("../controllers/property")
 const { requireAuth, checkUser } = require('../middleware/auth');
+const { upload } = require('../middleware/upload');
 const {check} = require('express-validator')
 const Property = require("../models/property")
 const router = express.Router()
@@ -40,7 +41,7 @@ router.get('/forgot-password', (req, res) => {
 
 // Property GET method - Gets property info to show if there are any properties that have the current user's id associated with them
 // (Also renders the dashboard page)
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', requireAuth, async (req, res) => {
     try{
         const properties = await Property.find({})
         res.render('dashboard', {
@@ -55,18 +56,15 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-// Profile GET method - Gets the current user's first/last name, username, email to display
+// Profile GET method - Gets the current user's information to display
 router.get('/profile', requireAuth, (req, res) => {
   res.render('profile', {
-    firstName: res.app.locals.user.firstName,
-    lastName: res.app.locals.user.lastName,
-    username: res.app.locals.user.username,
-    email: res.app.locals.user.email
+    user: res.app.locals.user
   })
 });
 
 // Add Property GET method
-router.get('/dashboard/add', [
+router.post('/dashboard/add', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -79,7 +77,7 @@ router.get('/dashboard/add', [
 ], addProperty);
 
 // Edit Property GET method
-router.get('/dashboard/edit/:propertyId', [
+router.post('/dashboard/edit/:propertyId', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -92,9 +90,23 @@ router.get('/dashboard/edit/:propertyId', [
 ], editProperty);
 
 // Delete Property GET method
-router.get('/dashboard/delete/:propertyId', deleteProperty);
+router.post('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
+
+// Edit Profile POST method
+router.post('/profile', requireAuth, [
+  check("firstName", "First name should be at least 3 characters").isLength({min: 3}),
+  check("firstName", "First name should be less than 32 characters").isLength({max: 32}),
+  check("lastName", "Last name should be at least 3 characters").isLength({min: 3}),
+  check("organization", "Organization should be less than 32 characters").isLength({max: 25}),
+  check("location", "Location should be less than 32 characters").isLength({max: 25}),
+  check("email", "Email should be valid").isEmail(),
+  check("birthday", "Birthday cannot be empty").isDate()
+], editUser);
+
+// Upload Profile Picture POST method
+router.post('/profile/upload', requireAuth, upload, editUserProfileImg);
 
 // Logout GET method - Handles logging out
-router.get("/signout", signout)
+router.get("/signout", requireAuth, signout)
 
 module.exports = router

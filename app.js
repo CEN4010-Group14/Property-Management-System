@@ -3,7 +3,6 @@ const express = require("express")
 const app = express();
 app.set('view engine', 'ejs');
 
-const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 require("dotenv").config();

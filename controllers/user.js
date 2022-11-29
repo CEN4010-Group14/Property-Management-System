@@ -75,3 +75,48 @@ exports.signout = (req, res) => {
   //  message: "User signout successful"
   //})
 }
+
+// Handles editing of User
+exports.editUser = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  User.findOneAndUpdate({ _id: res.app.locals.user.id }, {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    birthday: req.body.birthday,
+    email: req.body.email,
+    organization: req.body.organization,
+    location: req.body.location,
+    phoneNumber: req.body.phoneNumber,
+    password: req.body.password
+  }, (err, user) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  })
+}
+
+// Handles editing of User Profile picture
+exports.editUserProfileImg = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  User.findOneAndUpdate({ _id: res.app.locals.user.id }, {
+    profileImg: req.file.location
+  }, (err, user) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  })
+}

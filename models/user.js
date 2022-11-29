@@ -26,8 +26,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
-    maxlength: 35,
+    maxlength: 25,
     unique: true
+  },
+  birthday: {
+    type: Date
+  },
+  organization: {
+    type: String,
+    maxlength: 25
+  },
+  location: {
+    type: String,
+    maxlength: 25
+  },
+  phoneNumber: {
+    type: String,
+    maxlength: 10
+  },
+  profileImg: {
+    type: String
   },
   encry_password: {
     type: String,
