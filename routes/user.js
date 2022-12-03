@@ -21,7 +21,7 @@ router.get('/admin', requireAuth, async (req, res) => {
   try{
     const properties = await Property.find({})
     const users = await User.find({})
-    res.render('dashboard', {
+    res.render('admin', {
       properties: properties,
       users: users,
       firstName: res.app.locals.user.firstName,
@@ -82,7 +82,7 @@ router.get('/profile', requireAuth, (req, res) => {
 });
 
 // Add Property GET method
-router.post('/dashboard/add', requireAuth, [
+router.get('/dashboard/add', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -95,7 +95,7 @@ router.post('/dashboard/add', requireAuth, [
 ], addProperty);
 
 // Edit Property GET method
-router.post('/dashboard/edit/:propertyId', requireAuth, [
+router.get('/dashboard/edit/:propertyId', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -108,7 +108,7 @@ router.post('/dashboard/edit/:propertyId', requireAuth, [
 ], editProperty);
 
 // Delete Property GET method
-router.post('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
+router.get('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
 
 // Edit Profile POST method
 router.post('/profile', requireAuth, [

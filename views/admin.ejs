@@ -449,36 +449,45 @@ display: none;
                                         <thead>
                                             <tr style="text-align: center">
                                                 <th>User</th>
+                                                <th>Date of Purchase</th>
                                                 <th>Price</th>
                                                 <th>Address</th>
-                                                <th>Zip code</th>
+                                                <th>Zip Code</th>
                                                 <th class="noprint">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tableData">
                                             <tr>
                                             </tr>
-                                            <tr>
-                                                <td><input type="text" class="form-control" name="username" id="username" disabled=""></td>
-                                                <td><input type="text" class="form-control" name="price" id="price" disabled=""></td>
-                                                <td><input type="text" class="form-control" name="address" id="address" disabled=""></td>
-                                                <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled=""></td>
-                                                <td class="noprint">
-                                                    <button type="submit" class="add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
-                                                    <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                    <button type="submit" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-                                                    <a class="person_add" title="Allow Access" data-toggle="tooltip">
-                                                        <i class="material-icons">&#xe7fe;
-                                                            <div id="dia_shr" style="display:none;">
-                                                            <p>GRANT ACCESS</p><input type="text" placeholder="username" id="typeEmailX" />
-                                                            <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>
-                                                        </i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            <% users.forEach(user => { %>
+                                                <% properties.forEach(property => { %>
+                                                    <% if(user.id == property.ownerId) { %>
+                                                        <tr>
+                                                        <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username %>></td>
+                                                        <input type="hidden" class="form-control" name="ownerId" id="ownerId" disabled="" value=<%= user.id %>>
+                                                        <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
+                                                        <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
+                                                        <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
+                                                        <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
+                                                        <td class="noprint">
+                                                            <button type="submit" class="add" formaction="/admin/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
+                                                            <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
+                                                            <button type="submit" class="delete" title="Delete" formaction="/admin/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
+                                                            <a class="person_add" title="Allow Access" data-toggle="tooltip">
+                                                                <i class="material-icons">&#xe7fe;
+                                                                    <div id="dia_shr" style="display:none;">
+                                                                    <p>GRANT ACCESS</p><input type="text" placeholder="username" id="typeEmailX" />
+                                                                    <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>
+                                                                </i>
+                                                            </a>
+                                                        </td>
+                                                        </tr>
+                                                    <% } %>
+                                            <% }) %>
+                                        <% }) %>
+                                </form>
                                         </tbody>
                                     </table>
-                                </form>
                                     <% if(locals.error) { %>
                                         <div class="text-center"><%= error %></div>
                                     <% } %>

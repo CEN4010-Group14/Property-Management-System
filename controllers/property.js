@@ -50,6 +50,29 @@ exports.editProperty = (req, res) => {
     })
 }
 
+// Edit a Property - WORKING
+exports.editAdminProperty = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  Property.findOneAndUpdate({ _id: req.params.propertyId }, {
+    ownerId: req.query.ownerId,
+    dateOfPurchase: req.query.dateOfPurchase,
+    price: req.query.price,
+    address: req.query.address,
+    zipCode: req.query.zipCode
+  }, (err, property) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log("Updated property successfully");
+    }
+  })
+}
+
 // Deletes a Property - WORKING
 exports.deleteProperty = (req, res) => {
   const errors = validationResult(req)
