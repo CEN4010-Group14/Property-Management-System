@@ -80,40 +80,6 @@ table.table td .add {
 display: none;
 }
 
-.person_add {
-    position: relative;
-}
-
-.person_add {
-    position: relative;
-    }
-
-.person_add div {
-    /*visiblity: hidden; */
-
-    /*display: none;*/
-    position: absolute;
-    top: 0;
-    left:100%;
-    margin-top: -30px; /* approx adjustment for arrow */
-    margin-left: 25px; /* approx adjustment for arrow */
-    cursor: pointer;
-    width: 100px;
-    line-height: 20px;
-    padding: 8px;
-    font-size: 14px;
-    text-align: left;
-    z-index: 999;
-    color: black;
-    border-color: aqua;
-    /*
-    background: white;
-    -webkit-transition: opacity 100ms ease-in;
-    -o-transition: opacity 100ms ease-in;
-    -moz-transition: opacity 100ms ease-in;
-    transition: opacity 100ms ease-in;
-    pointer-events: none;*/
-}
 
 </style>
 
@@ -125,13 +91,6 @@ display: none;
             <button class="add" type="submit" formaction="/dashboard/add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
             <button class="edit" type="button" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
             <button class="delete" type="button" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-            <a class="person_add" title="Allow Access" data-toggle="tooltip">\
-                <i class="material-icons">&#xe7fe;\
-                    <div id="dia_shr" style="display:none;">\
-                    <p>GRANT ACCESS</p><input placeholder="username" type="text" id="typeEmailX" />\
-                    <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>\
-                </i>
-            </a>
         </td>`
         var hid_inv = true;
         // Append table with add row form on add new button click
@@ -481,18 +440,6 @@ display: none;
                                                     <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
                                                     <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
                                                     <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
-                                                    <td class="noprint">
-                                                        <button type="submit" class="add" formaction="/dashboard/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
-                                                        <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                        <button type="submit" class="delete" title="Delete" formaction="/dashboard/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-                                                        <a class="person_add" title="Allow Access" data-toggle="tooltip">
-                                                            <i class="material-icons">&#xe7fe;
-                                                                <div id="dia_shr" style="display:none;">
-                                                                <p>GRANT ACCESS</p><input type="text" placeholder="username" id="typeEmailX" />
-                                                                <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>
-                                                            </i>
-                                                        </a>
-                                                    </td>
                                                     </tr>
                                                 <% } %>
                                             <% }) %>
