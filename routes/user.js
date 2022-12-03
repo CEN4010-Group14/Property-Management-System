@@ -15,6 +15,16 @@ router.get('/signup', (req, res) => {
   return res.render('signup');
 });
 
+// Admin GET method - Renders the admin page
+router.get('/admin', (req, res) => {
+  res.render('admin', {
+    user: res.app.locals.user,
+    firstName: res.app.locals.user.firstName,
+    lastName: res.app.locals.user.lastName,
+    id: res.app.locals.user.id
+  })
+});
+
 // Register POST method - Handles registration
 router.post('/signup', [
   check("firstName", "First name should be at least 3 characters").isLength({min: 3}),
@@ -29,7 +39,6 @@ router.post('/signup', [
 router.get('/', (req, res) => {
   return res.render('signin');
 });
-
 
 // Login POST method - Handles logging in
 router.post('/', signin)
