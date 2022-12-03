@@ -5,6 +5,7 @@ const { requireAuth, checkUser } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 const {check} = require('express-validator')
 const Property = require("../models/property")
+const User = require("../models/user")
 const router = express.Router()
 
 // Check User GET method - Allows access to current user information through app.locals.user
@@ -16,13 +17,21 @@ router.get('/signup', (req, res) => {
 });
 
 // Admin GET method - Renders the admin page
-router.get('/admin', (req, res) => {
-  res.render('admin', {
-    user: res.app.locals.user,
-    firstName: res.app.locals.user.firstName,
-    lastName: res.app.locals.user.lastName,
-    id: res.app.locals.user.id
-  })
+router.get('/admin', requireAuth, async (req, res) => {
+  try{
+    const properties = await Property.find({})
+    const users = await User.find({})
+    res.render('dashboard', {
+      properties: properties,
+      users: users,
+      firstName: res.app.locals.user.firstName,
+      lastName: res.app.locals.user.lastName,
+      id: res.app.locals.user.id
+    })
+  } catch(error) {
+  console.log(error)
+    res.redirect('/')
+  }
 });
 
 // Register POST method - Handles registration
