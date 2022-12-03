@@ -167,12 +167,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= user.firstName %> <%= user.lastName %></span>
-                                <% if (!user.profileImg) { %>
-                                    <!-- Profile picture image-->
-                                    <img class="img-profile rounded-circle mb-2" src="img/undraw_profile.svg" alt="Profile Picture">
-                                <% } else { %>
-                                    <img class="img-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
-                                <% } %>
+                                <img class="img-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -205,12 +200,7 @@
                                     <div class="card-header">Profile Picture</div>
                                     <div class="card-body text-center">
                                         <form method="POST" action="/profile/upload" enctype="multipart/form-data">
-                                            <% if (!user.profileImg) { %>
-                                            <!-- Profile picture image-->
-                                            <img class="img-account-profile rounded-circle mb-2" src="img/undraw_profile.svg" alt="Profile Picture">
-                                            <% } else { %>
                                             <img class="img-account-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
-                                            <% } %>
                                             <!-- Profile picture help block-->
                                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                             <input type="file" name="profile-pic" required/>
@@ -273,7 +263,7 @@
                                                 <div class="col-md-6">
                                                     <label class="small mb-1" for="inputBirthday">Birthday</label>
                                                     <input class="form-control" id="inputBirthday" name="birthday" type="date" name="birthday" placeholder="Enter your birthday" value=
-                                                    <% if (!user.profileImg) { %>
+                                                    <% if (!user.birthday) { %>
                                                         <%= user.birthday %>>
                                                     <% } else { %>
                                                         <%= user.birthday.toISOString().split('T')[0] %>>

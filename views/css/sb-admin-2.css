@@ -615,7 +615,7 @@ mark,
   background-color: #fff;
   border: 1px solid #dddfeb;
   border-radius: 0.35rem;
-  max-width: 100%;
+  max-width: 32px;
   height: auto;
 }
 
@@ -10294,6 +10294,11 @@ a:focus {
 .topbar .nav-item .nav-link .img-profile {
   height: 2rem;
   width: 2rem;
+}
+
+.img-profile-icon {
+  height: 32px;
+  width: 32px;
 }
 
 .topbar {

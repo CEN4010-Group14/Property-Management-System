@@ -80,6 +80,11 @@ table.table td .add {
 display: none;
 }
 
+.img-profile-icon {
+    height: 35px;
+    width: 35px;
+}
+
 .person_add {
     position: relative;
 }
@@ -400,12 +405,7 @@ display: none;
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= firstName %> <%= lastName %></span>
-                                <% if (!user.profileImg) { %>
-                                    <!-- Profile picture image-->
-                                    <img class="img-profile rounded-circle mb-2" src="img/undraw_profile.svg" alt="Profile Picture">
-                                <% } else { %>
-                                    <img class="img-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
-                                <% } %>
+                                <img class="img-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -448,7 +448,8 @@ display: none;
                                         <!-- Property Table -->
                                         <thead>
                                             <tr style="text-align: center">
-                                                <th>User</th>
+                                                <th>Profile Picture</th>
+                                                <th>Username</th>
                                                 <th>Date of Purchase</th>
                                                 <th>Price</th>
                                                 <th>Address</th>
@@ -463,6 +464,7 @@ display: none;
                                                 <% properties.forEach(property => { %>
                                                     <% if(user.id == property.ownerId) { %>
                                                         <tr>
+                                                        <td style="text-align: center"><img class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>"></td>
                                                         <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username %>></td>
                                                         <input type="hidden" class="form-control" name="ownerId" id="ownerId" disabled="" value=<%= user.id %>>
                                                         <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
