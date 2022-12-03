@@ -472,14 +472,7 @@ display: none;
                                                         <td class="noprint">
                                                             <button type="submit" class="add" formaction="/admin/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
                                                             <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                            <button type="submit" class="delete" title="Delete" formaction="/admin/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-                                                            <a class="person_add" title="Allow Access" data-toggle="tooltip">
-                                                                <i class="material-icons">&#xe7fe;
-                                                                    <div id="dia_shr" style="display:none;">
-                                                                    <p>GRANT ACCESS</p><input type="text" placeholder="username" id="typeEmailX" />
-                                                                    <label class="form-label" for="typeEmailX"></label><button" style="background-color: aqua;" type="submit">SUBMIT</button></div>
-                                                                </i>
-                                                            </a>
+                                                            <button type="submit" class="delete" title="Delete" formaction="/dashboard/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
                                                         </td>
                                                         </tr>
                                                     <% } %>

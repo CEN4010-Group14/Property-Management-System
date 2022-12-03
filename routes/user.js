@@ -1,6 +1,6 @@
 const express = require("express")
 const { signup, signin, signout, editUser, editUserProfileImg } = require("../controllers/user")
-const { addProperty, editProperty, deleteProperty } = require("../controllers/property")
+const { addProperty, editProperty, editAdminProperty, deleteProperty } = require("../controllers/property")
 const { requireAuth, checkUser } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 const {check} = require('express-validator')
@@ -106,6 +106,22 @@ router.get('/dashboard/edit/:propertyId', requireAuth, [
   check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
   check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
 ], editProperty);
+
+// Delete Property GET method
+router.get('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
+
+// Edit Property GET method
+router.get('/admin/edit/:propertyId', requireAuth, [
+  check("dateOfPurchase", "Date cannot be empty").isDate(),
+  check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
+  check("price", "Price cannot be empty").isLength({min: 1}),
+  check("price", "Price can only be a number").isInt(),
+  check("address", "Address cannot be more than 50 characters").isLength({max: 50}),
+  check("address", "Address cannot be empty").isLength({min: 1}),
+  check("zipCode", "Zip Code can only be a number").isInt(),
+  check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
+  check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
+], editAdminProperty);
 
 // Delete Property GET method
 router.get('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
