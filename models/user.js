@@ -49,6 +49,11 @@ const userSchema = new mongoose.Schema({
     default: "img/undraw_profile.svg",
     required: true
   },
+  type: {
+    type: String,
+    default: "User",
+    required: true
+  },
   encry_password: {
     type: String,
     required: true

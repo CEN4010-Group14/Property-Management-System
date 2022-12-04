@@ -88,7 +88,7 @@ display: none;
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
         var actions = `<td>
-            <button class="add" type="submit" formaction="/dashboard/add" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
+            <button class="add" id="add" type="submit" formaction="/dashboard/add?_method=POST" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
             <button class="edit" type="button" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
             <button class="delete" type="button" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
         </td>`
@@ -109,7 +109,9 @@ display: none;
             $('[data-toggle="tooltip"]').tooltip();
         });
         // Add row on add button click
-        $(".add").on("click", function(){
+        $("#add").click(function(){
+            event.preventDefault();
+            console.log("test")
             var empty = false;
             var input = $(this).parents("tr").find('input[type="text"]');
             var inputDate = $(this).parents("tr").find('input[type="date"]');
@@ -141,8 +143,47 @@ display: none;
                 inputDate.each(function(){
                     $(this).parent("td").html($(this).val());
                 });*/	
-                $(this).parents("tr").find(".add, .edit").toggle();
-                $(".add-new").removeAttr("disabled");	
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");	
+            this.submit();
+        });
+        $("#edit").on("submit", function(){
+            event.preventDefault();
+            console.log("test")
+            var empty = false;
+            var input = $(this).parents("tr").find('input[type="text"]');
+            var inputDate = $(this).parents("tr").find('input[type="date"]');
+            input.each(function(){
+                if(!$(this).val()){
+                    $(this).addClass("error");
+                    empty = true;
+                    $(this).addAttr("disabled");
+                } else{
+                    $(this).removeClass("error");
+                }
+            });
+            inputDate.each(function(){
+                if(!$(this).val()){
+                    $(this).addClass("error");
+                    empty = true;
+                } else{
+                    $(this).removeClass("error");
+                }
+
+                if(!$(this).hasAttribute('disabled')) {
+                    $(this).addAttr('disabled');
+                }
+            });
+            $(this).parents("tr").find(".error").first().focus();
+                /*input.each(function(){
+                    $(this).parent("td").html($(this).val());
+                });	
+                inputDate.each(function(){
+                    $(this).parent("td").html($(this).val());
+                });*/	
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");	
+            this.submit();
         });
         // Edit row on edit button click
         $(".edit").on("click", function(){		
@@ -157,7 +198,8 @@ display: none;
             $(".add-new").attr("disabled", "disabled");
         });
         // Delete row on delete button click
-        $(".delete").on("click", function(){
+        $(document).on("submit", "#delete", function(){
+            console.log("test")
             if (confirm("Are you sure to execute this action?")){
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
@@ -249,12 +291,14 @@ display: none;
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <% if (user.type == "Admin") { %>
+            <!-- Nav Item - Admin -->
+            <li class="nav-item">
                 <a class="nav-link" href="/admin">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Admin</span></a>
             </li>
+            <% } %>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -413,7 +457,7 @@ display: none;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <form method="get">
+                                <form method="post">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <!-- Property Table -->
                                         <thead>
@@ -436,9 +480,9 @@ display: none;
                                                     <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
                                                     <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
                                                     <td class="noprint">
-                                                        <button type="submit" class="add" formaction="/dashboard/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
+                                                        <button type="submit" id="edit" class="add" formaction="/dashboard/<%= property._id %>?_method=PUT" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
                                                         <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                        <button type="submit" class="delete" title="Delete" formaction="/dashboard/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
+                                                        <button type="submit" id="delete" class="delete" formaction="/dashboard/<%= property._id %>?_method=DELETE" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
                                                     </td>
                                                     </tr>
                                                 <% } %>

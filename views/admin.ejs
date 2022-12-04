@@ -203,7 +203,7 @@ display: none;
             $(".add-new").attr("disabled", "disabled");
         });
         // Delete row on delete button click
-        $(".delete").on("click", function(){
+        /*$(".delete").on("click", function(){
             if (confirm("Are you sure to execute this action?")){
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
@@ -211,7 +211,7 @@ display: none;
                 $(this).parents("tr").find(".add, .delete").toggle();
                 $(this).parent('form').trigger('submit');
             } 
-        });
+        });*/
 
         // Print Table
         $(document).on('click', '.print', function(){
@@ -285,11 +285,24 @@ display: none;
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/dashboard">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Dashboard</span></a>
             </li>
+
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <% if (user.type == "Admin") { %>
+            <!-- Nav Item - Admin -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Admin</span></a>
+            </li>
+            <% } %>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -443,12 +456,12 @@ display: none;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <form method="get">
+                                <form method="post">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <!-- Property Table -->
                                         <thead>
                                             <tr style="text-align: center">
-                                                <th>Profile Picture</th>
+                                                <th class="noprint">Profile Picture</th>
                                                 <th>Username</th>
                                                 <th>Date of Purchase</th>
                                                 <th>Price</th>
@@ -464,18 +477,18 @@ display: none;
                                                 <% properties.forEach(property => { %>
                                                     <% if(user.id == property.ownerId) { %>
                                                         <tr>
-                                                        <td style="text-align: center"><img class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>"></td>
+                                                        <td class="noprint" style="text-align: center">
+                                                            <img class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
+                                                        </td>
                                                         <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username %>></td>
-                                                        <input type="hidden" class="form-control" name="ownerId" id="ownerId" disabled="" value=<%= user.id %>>
                                                         <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
                                                         <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
                                                         <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
                                                         <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
                                                         <td class="noprint">
-                                                            <button type="submit" class="add" formaction="/admin/edit/<%= property._id %>" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
+                                                            <button type="submit" id="edit" class="add" formaction="/admin/<%= property._id %>?_method=PUT" title="Done" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></button>
                                                             <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                            <button type="submit" class="delete" title="Delete" formaction="/dashboard/delete/<%= property._id %>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-                                                        </td>
+                                                            <button type="submit" class="delete" formaction="/admin/<%= property._id %>?_method=DELETE" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
                                                         </tr>
                                                     <% } %>
                                             <% }) %>

@@ -20,6 +20,15 @@ const requireAuth = (req, res, next) => {
   }
 };
 
+const requireAdmin = (req, res, next) => {
+
+  if (res.app.locals.user.type == "Admin") {
+    next();
+  } else {
+    res.redirect('/dashboard');
+  }
+};
+
 // check current user
 const checkUser = (req, res, next) => {
   const token = req.cookies.token;
@@ -43,4 +52,4 @@ const checkUser = (req, res, next) => {
 };
 
 
-module.exports = { requireAuth, checkUser };
+module.exports = { requireAuth, requireAdmin, checkUser };

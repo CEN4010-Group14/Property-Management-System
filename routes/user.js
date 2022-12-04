@@ -1,7 +1,7 @@
 const express = require("express")
 const { signup, signin, signout, editUser, editUserProfileImg } = require("../controllers/user")
-const { addProperty, editProperty, editAdminProperty, deleteProperty } = require("../controllers/property")
-const { requireAuth, checkUser } = require('../middleware/auth');
+const { addProperty, editProperty, editAdminProperty, deleteProperty, deleteAdminProperty } = require("../controllers/property")
+const { requireAuth, requireAdmin, checkUser } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 const {check} = require('express-validator')
 const Property = require("../models/property")
@@ -17,7 +17,7 @@ router.get('/signup', (req, res) => {
 });
 
 // Admin GET method - Renders the admin page
-router.get('/admin', requireAuth, async (req, res) => {
+router.get('/admin', requireAuth, requireAdmin, async (req, res) => {
   try{
     const properties = await Property.find({})
     const users = await User.find({})
@@ -33,6 +33,22 @@ router.get('/admin', requireAuth, async (req, res) => {
     res.redirect('/')
   }
 });
+
+// Edit Property GET method
+router.put('/admin/:propertyId', requireAuth, requireAdmin, [
+  check("dateOfPurchase", "Date cannot be empty").isDate(),
+  check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
+  check("price", "Price cannot be empty").isLength({min: 1}),
+  check("price", "Price can only be a number").isInt(),
+  check("address", "Address cannot be more than 50 characters").isLength({max: 50}),
+  check("address", "Address cannot be empty").isLength({min: 1}),
+  check("zipCode", "Zip Code can only be a number").isInt(),
+  check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
+  check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
+], editAdminProperty);
+
+// Delete Property GET method
+router.delete('/admin/:propertyId', requireAuth, requireAdmin, deleteAdminProperty);
 
 // Register POST method - Handles registration
 router.post('/signup', [
@@ -75,14 +91,21 @@ router.get('/dashboard', requireAuth, async (req, res) => {
 });
 
 // Profile GET method - Gets the current user's information to display
-router.get('/profile', requireAuth, (req, res) => {
-  res.render('profile', {
-    user: res.app.locals.user
-  })
+router.get('/profile', requireAuth, async (req, res) => {
+  try{
+    const users = await User.find({})
+    res.render('profile', {
+      users: users,
+      currentUser: res.app.locals.user
+    })
+  } catch(error) {
+  console.log(error)
+    res.redirect('/')
+  }
 });
 
 // Add Property GET method
-router.get('/dashboard/add', requireAuth, [
+router.post('/dashboard/add', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -95,7 +118,7 @@ router.get('/dashboard/add', requireAuth, [
 ], addProperty);
 
 // Edit Property GET method
-router.get('/dashboard/edit/:propertyId', requireAuth, [
+router.put('/dashboard/:propertyId', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
   check("price", "Price cannot be empty").isLength({min: 1}),
@@ -108,23 +131,7 @@ router.get('/dashboard/edit/:propertyId', requireAuth, [
 ], editProperty);
 
 // Delete Property GET method
-router.get('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
-
-// Edit Property GET method
-router.get('/admin/edit/:propertyId', requireAuth, [
-  check("dateOfPurchase", "Date cannot be empty").isDate(),
-  check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
-  check("price", "Price cannot be empty").isLength({min: 1}),
-  check("price", "Price can only be a number").isInt(),
-  check("address", "Address cannot be more than 50 characters").isLength({max: 50}),
-  check("address", "Address cannot be empty").isLength({min: 1}),
-  check("zipCode", "Zip Code can only be a number").isInt(),
-  check("zipCode", "Zip Code cannot be more than 10 digits").isLength({max: 8}),
-  check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
-], editAdminProperty);
-
-// Delete Property GET method
-router.get('/dashboard/delete/:propertyId', requireAuth, deleteProperty);
+router.delete('/dashboard/:propertyId', requireAuth, deleteProperty);
 
 // Edit Profile POST method
 router.post('/profile', requireAuth, [

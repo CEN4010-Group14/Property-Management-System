@@ -1,4 +1,6 @@
 const Property = require("../models/property")
+const User = require("../models/user")
+const mongoose = require("mongoose")
 const {validationResult} = require('express-validator')
 
 // Creates a New Property - WORKING
@@ -11,10 +13,10 @@ exports.addProperty = (req, res) => {
   
     const property = new Property({
       ownerId: res.app.locals.user.id,
-      dateOfPurchase: req.query.dateOfPurchase,
-      price: req.query.price,
-      address: req.query.address,
-      zipCode: req.query.zipCode
+      dateOfPurchase: req.body.dateOfPurchase,
+      price: req.body.price,
+      address: req.body.address,
+      zipCode: req.body.zipCode
     })
     property.save((err, property) => {
       if(err) {
@@ -24,6 +26,7 @@ exports.addProperty = (req, res) => {
       } else {
         console.log("Added Property Successfully")
         console.log(property)
+        res.redirect('/dashboard')
       }
     })
   }
@@ -37,15 +40,16 @@ exports.editProperty = (req, res) => {
     }
 
     Property.findOneAndUpdate({ _id: req.params.propertyId }, {
-      dateOfPurchase: req.query.dateOfPurchase,
-      price: req.query.price,
-      address: req.query.address,
-      zipCode: req.query.zipCode
+      dateOfPurchase: req.body.dateOfPurchase,
+      price: req.body.price,
+      address: req.body.address,
+      zipCode: req.body.zipCode
     }, (err, property) => {
       if(err) {
         console.log(err);
       } else {
-        console.log("Updated property successfully");
+        console.log(property);
+        res.redirect('/dashboard')
       }
     })
 }
@@ -54,21 +58,18 @@ exports.editProperty = (req, res) => {
 exports.editAdminProperty = (req, res) => {
   const errors = validationResult(req)
 
-  if(!errors.isEmpty()) {
-    console.log(errors.array()[0].msg)
-  }
-
   Property.findOneAndUpdate({ _id: req.params.propertyId }, {
-    ownerId: req.query.ownerId,
-    dateOfPurchase: req.query.dateOfPurchase,
-    price: req.query.price,
-    address: req.query.address,
-    zipCode: req.query.zipCode
+    dateOfPurchase: req.body.dateOfPurchase,
+    price: req.body.price,
+    address: req.body.address,
+    zipCode: req.body.zipCode
   }, (err, property) => {
     if(err) {
       console.log(err);
     } else {
       console.log("Updated property successfully");
+      console.log(property);
+      res.redirect('/admin')
     }
   })
 }
@@ -76,8 +77,6 @@ exports.editAdminProperty = (req, res) => {
 // Deletes a Property - WORKING
 exports.deleteProperty = (req, res) => {
   const errors = validationResult(req)
-
-  console.log(req.params.propertyId)
 
   if(!errors.isEmpty()) {
     console.log(errors.array()[0].msg)
@@ -88,6 +87,27 @@ exports.deleteProperty = (req, res) => {
       console.log(err);
     } else {
       console.log("Deleted property successfully");
+      console.log(property);
+      res.redirect('/dashboard')
+    }
+  })
+}
+
+// Deletes a Property - WORKING
+exports.deleteAdminProperty = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  Property.findOneAndDelete({ _id: req.params.propertyId }, (err, property) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Deleted property successfully");
+      console.log(property);
+      res.redirect('/admin')
     }
   })
 }

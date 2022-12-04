@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const express = require("express")
+var methodOverride = require('method-override')
 const app = express();
 app.set('view engine', 'ejs');
 
@@ -11,6 +12,7 @@ require("dotenv").config();
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
   useCreateIndex: true
 }).then(() => {
   console.log("DB CONNECTED")
@@ -24,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser(process.env.SECRET))
 app.use(cors())
+app.use(methodOverride('_method'))
 app.use(express.static(__dirname));
 
 // Import the routes
