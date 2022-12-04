@@ -248,32 +248,14 @@ display: none;
         // search bar
         $(document).ready(function(){
             $("#search").on("keyup", function() {
-                var value = $(this).val().toLowerCase();    //needs to go into input boxes
-                $("#tableData tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                var value = $(this).val().toLowerCase();
+                $(".properties").filter(function() {
+                    var x = $(this)[0].children[2].children.address.value;
+                    $(this).toggle(x.toLowerCase().indexOf(value) > -1);
                 });
             });
         });
-        /*
-        function liveSearch() {
-            let search_query= document.getElementById("search").value;
-            console.log(properties[0].children)
-            //Use innerText if all contents are visible
-            //Use textContent for including hidden elements
-            for (var i = 0; i < properties.length; i++) {
-                if(properties[i].textContent.toLowerCase()      //here needs to be changed
-                        .includes(search_query.toLowerCase())) {
-                    properties[i].classList.remove("is-hidden");
-                } else {
-                    properties[i].classList.add("is-hidden");
-                }
-            }
-        }
         
-        let typingTimer;
-        let typeInterval = 500;
-        let searchInput = document.getElementById("search");
-        */
         searchInput.addEventListener('keyup', () =>{
             clearTimeout(typingTimer);
             typingTimer = setTimeout(liveSearch, typeInterval);
@@ -358,7 +340,7 @@ display: none;
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" id="search" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" id="search" class="form-control bg-light border-0 small" placeholder="Search for address..."
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
