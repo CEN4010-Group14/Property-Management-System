@@ -92,7 +92,7 @@ display: none;
             <button class="edit" type="button" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
             <button class="delete" type="button" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
         </td>`
-        var hid_inv = true;
+        let properties = document.querySelectorAll(".properties");
         // Append table with add row form on add new button click
         $(".add-new").click(function(){
             $(this).attr("disabled", "disabled");
@@ -253,6 +253,30 @@ display: none;
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+        });
+        /*
+        function liveSearch() {
+            let search_query= document.getElementById("search").value;
+            console.log(properties[0].children)
+            //Use innerText if all contents are visible
+            //Use textContent for including hidden elements
+            for (var i = 0; i < properties.length; i++) {
+                if(properties[i].textContent.toLowerCase()      //here needs to be changed
+                        .includes(search_query.toLowerCase())) {
+                    properties[i].classList.remove("is-hidden");
+                } else {
+                    properties[i].classList.add("is-hidden");
+                }
+            }
+        }
+        */
+        let typingTimer;
+        let typeInterval = 500;
+        let searchInput = document.getElementById("search");
+        
+        searchInput.addEventListener('keyup', () =>{
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(liveSearch, typeInterval);
         });
 
         $(document).on("click", ".person_add", function(){
@@ -474,7 +498,7 @@ display: none;
                                             </tr>
                                             <% properties.forEach(property => { %>
                                                 <% if(id == property.ownerId) { %>
-                                                    <tr>
+                                                    <tr class="properties">
                                                     <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
                                                     <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
                                                     <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
