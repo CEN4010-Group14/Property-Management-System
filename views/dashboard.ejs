@@ -200,7 +200,7 @@ display: none;
         // Delete row on delete button click
         $(document).on("submit", "#delete", function(){
             console.log("test")
-            if (confirm("Are you sure to execute this action?")){
+            if (confirm("Delete this Property?")){
                 $(this).tooltip('hide');
                 $(this).parents("tr").remove();
                 $(".add-new").removeAttr("disabled");
