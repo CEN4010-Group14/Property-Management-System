@@ -92,7 +92,7 @@ display: none;
             <button class="edit" type="button" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
             <button class="delete" type="button" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
         </td>`
-        let properties = document.querySelectorAll(".properties");
+        //let properties = document.querySelectorAll(".properties");
         // Append table with add row form on add new button click
         $(".add-new").click(function(){
             $(this).attr("disabled", "disabled");
@@ -248,7 +248,7 @@ display: none;
         // search bar
         $(document).ready(function(){
             $("#search").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
+                var value = $(this).val().toLowerCase();    //needs to go into input boxes
                 $("#tableData tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
@@ -269,11 +269,11 @@ display: none;
                 }
             }
         }
-        */
+        
         let typingTimer;
         let typeInterval = 500;
         let searchInput = document.getElementById("search");
-        
+        */
         searchInput.addEventListener('keyup', () =>{
             clearTimeout(typingTimer);
             typingTimer = setTimeout(liveSearch, typeInterval);
