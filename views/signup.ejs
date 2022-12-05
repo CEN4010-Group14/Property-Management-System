@@ -22,6 +22,24 @@
 
 </head>
 
+<script>
+    // Show password
+    function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+        var x = document.getElementById("password2");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+</script>
+
 <body class="bg-gradient-primary" style="background: linear-gradient(to left,rgb(82, 142, 244),  rgb(148, 103, 201))">
 
     <div class="container">
@@ -34,7 +52,7 @@
                         <img src="/img/logHouse.jpg" alt="House Image" style="max-width:110%;max-height:100%">
                     </div>
                     <div class="col-lg-6">
-                        <div class="p-5">
+                        <div class="p-5 ml-4">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
@@ -55,30 +73,41 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input type="password" class="form-control form-control-user" id="password"
                                             name="password" placeholder="Password" required="">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input type="password" class="form-control form-control-user" id="password2"
                                             name="passwordConf" placeholder="Repeat Password" required="">
+                                    </div>
+                                </div>
+                                <!--Show Password-->
+                                <div class="form-group flex-row">
+                                    <div class="custom-control custom-checkbox small">
+                                        <div>
+                                            <input type="checkbox" class="custom-control-input" onclick="showPassword()" id="customCheck2">
+                                            <label style="float: left;" class="custom-control-label ml-2" for="customCheck2">Show Password</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <% if(locals.error) { %>
                                     <div class="text-center"><%= error %></div>
                                 <% } %>
                                 <input type="submit" value="Register Account" class="btn btn-primary btn-user btn-block">
-                                </form>
-                                <div class="bg-danger">
-                                    <span id="check"></span>
-                                </div>
-                                <hr>
-                                <a href="#" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Register with Google
-                                </a>
-                                <a href="#" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                </a>
+                            </form>
+                            <div class="bg-danger">
+                                <span id="check"></span>
+                            </div>
                             <hr>
+                            <!-- google/facebook login
+                            <a href="#" class="btn btn-google btn-user btn-block">
+                                <i class="fab fa-google fa-fw"></i> Register with Google
+                            </a>
+                            <a href="#" class="btn btn-facebook btn-user btn-block">
+                                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                            </a>
+                            <hr>
+                            -->
                             <div class="text-center">
                                 <a class="small" href="/forgot-password">Forgot Password?</a>
                             </div>
@@ -91,7 +120,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
