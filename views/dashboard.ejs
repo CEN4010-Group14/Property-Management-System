@@ -476,8 +476,8 @@ display: none;
                                             <% properties.forEach(property => { %>
                                                 <% if(id == property.ownerId) { %>
                                                     <tr class="properties">
-                                                    <td><input type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
-                                                    <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= property.price %>></td>
+                                                    <td><input style="text-align: center" type="date" class="form-control" name="dateOfPurchase" id="dateOfPurchase" disabled="" value=<%= property.dateOfPurchase.toISOString().split('T')[0] %>></td>
+                                                    <td><input type="text" class="form-control" name="price" id="price" disabled="" value=<%= "$" + property.price %>></td>
                                                     <td><input type="text" class="form-control" name="address" id="address" disabled="" value='<%= property.address %>''></td>
                                                     <td><input type="text" class="form-control" name="zipCode" id="zipCode" disabled="" value=<%= property.zipCode %>></td>
                                                     <td class="noprint">
@@ -488,9 +488,9 @@ display: none;
                                                     </tr>
                                                 <% } %>
                                             <% }) %>
-                                </form>
                                         </tbody>
                                     </table>
+                                </form>
                                     <% if(locals.error) { %>
                                         <div class="text-center"><%= error %></div>
                                     <% } %>
