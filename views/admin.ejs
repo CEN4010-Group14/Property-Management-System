@@ -253,10 +253,16 @@ display: none;
         $(document).ready(function(){
             $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#tableData tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                $(".properties").filter(function() {
+                    var x = $(this)[0].children[4].children.address.value;
+                    $(this).toggle(x.toLowerCase().indexOf(value) > -1);
                 });
             });
+        });
+
+        searchInput.addEventListener('keyup', () =>{
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(liveSearch, typeInterval);
         });
 
         $(document).on("click", ".person_add", function(){
@@ -299,7 +305,7 @@ display: none;
             <!-- Nav Item - Admin -->
             <li class="nav-item active">
                 <a class="nav-link" href="/admin">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>Admin</span></a>
             </li>
             <% } %>
@@ -338,13 +344,8 @@ display: none;
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" id="search" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" id="search" class="form-control bg-light border-0 small" placeholder="Search for user/address..."
                                 aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
                         </div>
                     </form>
 
@@ -476,7 +477,7 @@ display: none;
                                             <% users.forEach(user => { %>
                                                 <% properties.forEach(property => { %>
                                                     <% if(user.id == property.ownerId) { %>
-                                                        <tr>
+                                                        <tr class="properties">
                                                         <td class="noprint" style="text-align: center">
                                                             <img class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
                                                         </td>
@@ -491,11 +492,11 @@ display: none;
                                                             <button type="submit" class="delete" formaction="/admin/<%= property._id %>?_method=DELETE" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
                                                         </tr>
                                                     <% } %>
+                                                <% }) %>
                                             <% }) %>
-                                        <% }) %>
-                                </form>
                                         </tbody>
                                     </table>
+                                </form>
                                     <% if(locals.error) { %>
                                         <div class="text-center"><%= error %></div>
                                     <% } %>
