@@ -39,6 +39,58 @@
         text-align:center;
     }
 
+    /*Legacy CSS*/
+
+    /*Property Table*/
+
+    table.table tr th, table.table tr td {
+    border-color: rgb(250, 250, 250);
+    }
+    table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    }
+    table.table th:last-child {
+    width: 125px;
+    }
+    table.table td button {
+    margin: 0;
+    min-width: 24px;
+    border: none;
+    background: transparent;
+    }    
+    table.table td button.add {
+    color: #27C46B;
+    }
+    table.table td button.edit {
+    color: #FFC107;
+    }
+    table.table td button.delete {
+    color: #E34724;
+    }
+    table.table td i {
+        font-size: 22px;
+    }
+    table.table td button.add i {
+    font-size: 24px;
+    margin-right: -1px;
+    position: relative;
+    top: 3px;
+    }    
+    table.table .form-control {
+    height: 32px;
+    line-height: 32px;
+    box-shadow: none;
+    border-radius: 2px;
+    }
+    table.table .form-control.error {
+    border-color: #f50000;
+    font-size: 20px;
+    }
+    table.table td .add {
+    display: none;
+    }
+
 </style>
 
 <body id="page-top">
@@ -297,7 +349,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <!-- Save changes button-->
-                                                <input type="submit" value="send" formaction="/profile" class="btn btn-primary">
+                                                <input type="submit" value="send" formaction="" class="btn btn-primary">
                                             </div>
                                         </div>
                                     </form>
@@ -307,20 +359,18 @@
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                 <!-- Property Table -->
                                                 <thead>
-                                                    <tr style="text-align: center">
+                                                    <tr style="text-align: center;">
                                                         <th class="noprint"></th>
-                                                        <th>Username</th>
-                                                        <th class="noprint">Actions</th>
+                                                        <th>Authorized users</th>
+                                                        <th class="noprint" width="15%">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tableData">
                                                     <tr>
-                                                    </tr>
-                                                    <tr>
                                                         <td class="noprint" style="text-align: center">
-                                                            <img style="max-width:50px;max-height:50px" class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
+                                                            <img style="max-width:35px;max-height:35px" class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
                                                         </td>
-                                                        <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username %>></td>
+                                                        <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username + '(Default)' %>></td>
                                                         <td class="noprint">
                                                             <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
                                                             <button type="submit" class="delete" formaction="/profile/?_method=DELETE" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
