@@ -62,8 +62,8 @@
     table.table td button.add {
     color: #27C46B;
     }
-    table.table td button.edit {
-    color: #FFC107;
+    table.table td button.view {
+    color: #7973b3;
     }
     table.table td button.delete {
     color: #E34724;
@@ -105,7 +105,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/dashboard">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Dashboard</span></a>
@@ -116,7 +116,7 @@
 
             <% if (user.type == "Admin") { %>
             <!-- Nav Item - Admin -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/admin">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Admin</span></a>
@@ -243,7 +243,7 @@
                                     <div class="card-header">Profile Picture</div>
                                     <div class="card-body text-center">
                                         <form method="POST" action="/profile/upload" enctype="multipart/form-data">
-                                            <img class="img-account-profile mb-2" src="<%= user.profileImg %>" alt="Profile Picture" style="max-width:100%;max-height:100%">
+                                            <img class="img-account-profile rounded-circle mb-2" src="<%= user.profileImg %>" alt="Profile Picture" style="max-width:100%;max-height:100%">
                                             <!-- Profile picture help block-->
                                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                                             <!-- Divider -->
@@ -299,7 +299,7 @@
                                             <!-- Form Group (email address)-->
                                             <div class="mb-3">
                                                 <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                                <input class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="Enter your email address" value=<%= user.email %>>
+                                                <input class="form-control" id="inputEmailAddress" name="email" type="email" disabled="disabled" placeholder="Enter your email address" value=<%= user.email %>>
                                             </div>
                                             <!-- Form Row-->
                                             <div class="row gx-3 mb-3">
@@ -320,7 +320,7 @@
                                                 </div>
                                             </div>
                                             <!-- Save changes button-->
-                                            <input type="submit" value="save" formaction="/profile" class="btn btn-primary">
+                                            <input type="submit" value="Save" formaction="/profile" class="btn btn-primary">
                                         </form>
                                     </div>
                                 </div>
@@ -338,44 +338,50 @@
                                         <div class="row">
                                             <br>
                                             <div class="col-lg-11">
-                                                <select class="form-control" name="languages" id="lang">
+                                                <select class="form-control" name="username">
                                                     <option value="default">Select Username</option>
                                                     <% users.forEach(user => { %>
                                                         <% if(currentUser.id != user.id) { %>
-                                                            <option value="user"><%= user.username %></option>
+                                                            <option><%= user.username %></option>
                                                         <% } %>
                                                     <% }) %>
                                                 </select>
                                             </div>
                                             <div class="col-md-1">
                                                 <!-- Save changes button-->
-                                                <input type="submit" value="send" formaction="" class="btn btn-primary">
+                                                <input type="submit" value="Share" formaction="/profile/share/add" class="btn btn-primary">
                                             </div>
                                         </div>
                                     </form>
                                     <hr class="sidebar-divider mb-4">
                                     <div class="table-responsive">
-                                        <form method="post">
+                                        <form method="get">
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                 <!-- Property Table -->
                                                 <thead>
                                                     <tr style="text-align: center;">
                                                         <th class="noprint"></th>
-                                                        <th>Authorized users</th>
+                                                        <th>Users shared with you</th>
                                                         <th class="noprint" width="15%">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tableData">
-                                                    <tr>
-                                                        <td class="noprint" style="text-align: center">
-                                                            <img style="max-width:35px;max-height:35px" class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
-                                                        </td>
-                                                        <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username + '(Default)' %>></td>
-                                                        <td class="noprint">
-                                                            <button type="button" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></button>
-                                                            <button type="submit" class="delete" formaction="/profile/?_method=DELETE" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
-                                                        </td>
-                                                    </tr>   
+                                                    <% users.forEach(user => { %>
+                                                        <% for (let i = 0; i < currentUser.sharedIds.length; i++) { %>
+                                                            <% if (currentUser.sharedIds[i] == user.id) { %>
+                                                                <tr>
+                                                                    <td class="noprint" style="text-align: center">
+                                                                        <img style="max-width:35px;max-height:35px" class="img-profile-icon rounded-circle mb-2" src="<%= user.profileImg %>" alt="<%= user.username %>">
+                                                                    </td>
+                                                                    <td><input type="text" class="form-control" name="username" id="username" disabled="" value=<%= user.username %>></td>
+                                                                    <td class="noprint">
+                                                                        <button type="submit" class="view" formaction="/properties/user/<%= user.id %>" title="View" data-toggle="tooltip"><i class="material-icons">&#xE8f4;</i></button>
+                                                                        <button type="submit" class="delete" formaction="/profile/share/delete/<%= user.id %>" title="Remove" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
+                                                                    </td>
+                                                                </tr> 
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% }) %>  
                                         </form>
                                                 </tbody>
                                             </table>

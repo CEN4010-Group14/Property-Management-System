@@ -88,17 +88,57 @@ exports.editUser = (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     birthday: req.body.birthday,
-    email: req.body.email,
     organization: req.body.organization,
     location: req.body.location,
-    phoneNumber: req.body.phoneNumber,
-    password: req.body.password
+    phoneNumber: req.body.phoneNumber
   }, (err, user) => {
     if(err) {
       console.log(err);
     } else {
       console.log(user);
+      res.redirect('/profile')
     }
+  })
+}
+
+// Shares a User with another User
+exports.addShared = (req, res) => {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  User.findOneAndUpdate({ username: req.body.username }, {
+    $push: { sharedIds: [res.app.locals.user.id] }
+  }, (err, user) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(user);
+      res.redirect('/profile')
+    }
+  })
+}
+
+// Removes a User from users shared Users
+exports.deleteShared = (req, res) => {
+  const errors = validationResult(req)
+  console.log(req.params.userId)
+
+  if(!errors.isEmpty()) {
+    console.log(errors.array()[0].msg)
+  }
+
+  User.findOneAndUpdate({ _id: res.app.locals.user.id }, { 
+     $pull: { sharedIds: req.params.userId }
+    }, (err, user) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(user);
+        res.redirect('/profile')
+      }
   })
 }
 

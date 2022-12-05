@@ -1,7 +1,7 @@
 const express = require("express")
-const { signup, signin, signout, editUser, editUserProfileImg } = require("../controllers/user")
+const { signup, signin, signout, editUser, editUserProfileImg, addShared, deleteShared } = require("../controllers/user")
 const { addProperty, editProperty, editAdminProperty, deleteProperty, deleteAdminProperty } = require("../controllers/property")
-const { requireAuth, requireAdmin, checkUser } = require('../middleware/auth');
+const { requireAuth, requireAdmin, requireShared, checkUser } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
 const {check} = require('express-validator')
 const Property = require("../models/property")
@@ -104,7 +104,7 @@ router.get('/profile', requireAuth, async (req, res) => {
   }
 });
 
-// Add Property GET method
+// Add Property POST method - Adds a property
 router.post('/dashboard/add', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
@@ -117,7 +117,7 @@ router.post('/dashboard/add', requireAuth, [
   check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
 ], addProperty);
 
-// Edit Property GET method
+// Edit Property PUT method - Edits a property
 router.put('/dashboard/:propertyId', requireAuth, [
   check("dateOfPurchase", "Date cannot be empty").isDate(),
   check("price", "Price cannot be more than 10 digits").isLength({max: 10}),
@@ -130,7 +130,7 @@ router.put('/dashboard/:propertyId', requireAuth, [
   check("zipCode", "Zip Code cannot be empty").isLength({min: 1})
 ], editProperty);
 
-// Delete Property GET method
+// Delete Property DELETE method - Deletes a property
 router.delete('/dashboard/:propertyId', requireAuth, deleteProperty);
 
 // Edit Profile POST method
@@ -146,6 +146,31 @@ router.post('/profile', requireAuth, [
 
 // Upload Profile Picture POST method
 router.post('/profile/upload', requireAuth, upload, editUserProfileImg);
+
+// Profile Share POST Method - Shares a Property with another User
+router.post('/profile/share/add', requireAuth, addShared);
+
+// User Property GET Method - Shows other users property page if shared
+router.get('/properties/user/:userId', requireAuth, requireShared, async (req, res) => {
+  try{
+      const properties = await Property.find({})
+      const users = await User.find({})
+      res.render('properties', {
+        properties: properties,
+        users: users,
+        firstName: res.app.locals.user.firstName,
+        lastName: res.app.locals.user.lastName,
+        userId: req.params.userId,
+        id: res.app.locals.user.id
+      })
+  } catch(error) {
+    console.log(error)
+      res.redirect('/profile')
+  }
+});
+
+// Share Remove PUT Method - Removes a shared User from your list of shared Users
+router.get('/profile/share/delete/:userId', requireAuth, deleteShared);
 
 // Logout GET method - Handles logging out
 router.get("/signout", requireAuth, signout)

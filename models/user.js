@@ -49,6 +49,11 @@ const userSchema = new mongoose.Schema({
     default: "img/undraw_profile.svg",
     required: true
   },
+  sharedIds: {
+    type: [mongoose.ObjectId],
+    default: [''],
+    required: true
+  },
   type: {
     type: String,
     default: "User",

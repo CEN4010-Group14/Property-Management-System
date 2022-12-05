@@ -29,6 +29,22 @@ const requireAdmin = (req, res, next) => {
   }
 };
 
+const requireShared = (req, res, next) => {
+  var isShared = false;
+
+  for (let i = 0; i < res.app.locals.user.sharedIds.length; i++) {
+    if (res.app.locals.user.sharedIds[i] == req.params.userId) {
+      isShared = true;
+    } 
+  }
+
+  if(isShared) {
+    next();
+  } else {
+    res.redirect('/dashboard');
+  }
+}
+
 // check current user
 const checkUser = (req, res, next) => {
   const token = req.cookies.token;
@@ -52,4 +68,4 @@ const checkUser = (req, res, next) => {
 };
 
 
-module.exports = { requireAuth, requireAdmin, checkUser };
+module.exports = { requireAuth, requireAdmin, requireShared, checkUser };
